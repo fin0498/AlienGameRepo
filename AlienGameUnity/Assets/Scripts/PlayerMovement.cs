@@ -18,16 +18,30 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private LayerMask groundLayer = 0;
 
+    [SerializeField]
+    private Joystick myJoystick = null;
+
     // Reference variable so we can use the Rigidbody
     // Set it to null by default, which means we do not have a reference yet.
     private Rigidbody2D physicsBody = null;
 
     // Awake is called before start
-    private void Awake()
+    private void Awake() 
     {
         physicsBody = GetComponent<Rigidbody2D>();
     }
 
+    private void FixedUpdate()
+    {
+        //Make a variable to hold our velocity and get the current velocity from the physics component
+        Vector2 newVelocity = physicsBody.velocity;
+
+        // Set our velocity to move in the the direction our joystick is pressed
+        newVelocity.x = speed * myJoystick.Horizontal;
+
+        //Update our physics components velocity to be our newly changed value
+        physicsBody.velocity = newVelocity;
+    }
 
     public void Jump()
     {
